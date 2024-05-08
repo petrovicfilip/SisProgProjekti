@@ -1,1 +1,2 @@
-Ovo je repozitorijum za projete iz sistemskog programiranja.
+Ovo je repozitorijum za projekte iz sistemskog programiranja.
+dev.
