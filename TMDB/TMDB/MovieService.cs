@@ -14,75 +14,100 @@ namespace TMDB
         private static readonly string _apiKey = "425f3c1ae557e64fe442891e70cee6a1";
         private static readonly string _baseURL = "https://api.themoviedb.org/3";
 
-        public static List<string> searchMovieService(string query)
+        public static List<Movie> searchMovieService(string query)
         {
             string searchURL = _baseURL + $"/search/movie?query={query}&api_key={_apiKey}";
-            List<string> titles = MovieCache.readFromCache(searchURL);
+            List<Movie> titles = MovieCache.readFromCache(searchURL);
 
-            if(titles.Count == 1 && titles[0] == "~~")
+            if (titles == null)
             {
-                titles.RemoveAt(0); // brise ~~
+                titles = new List<Movie>();
+
                 var data = GetData(searchURL);
 
-                if (data == null || data["results"].Count() == 0)
+                if (data == null || data["results"]?.Count() == 0)
                 {
                     Console.WriteLine("Nema dostupnih filmova ili nisu adekvatno pribavljeni.");
-                    return new List<string>();
+                    return new List<Movie>();
                 }
                 foreach (var movie in data["results"])
                 {
-                    string title = (string)movie["title"] + " (" + (string)movie["release_date"] + ")";
-                    titles.Add(title);
+                    Movie film = new Movie()
+                    {
+                        Title = (string)movie["title"],
+                        Description = (string)movie["overview"],
+                        Rating = (string)movie["vote_average"],
+                        Release_date = (string)movie["release_date"],
+                        Poster = (string)movie["poster_path"]
+                    };
+
+                    titles.Add(film);
                 }
                 MovieCache.writeInCache(new MovieCacheItem(titles, searchURL));
             }
             return titles;
         }
-        public static List<string> findMovieService(string imdbID)
+        public static List<Movie> findMovieService(string imdbID)
         {
             string findURL = _baseURL + $"/find/{imdbID}?external_source=imdb_id&api_key={_apiKey}";
-            List<string> titles = MovieCache.readFromCache(findURL);
+            List<Movie>? titles = MovieCache.readFromCache(findURL);
 
-            if (titles.Count == 1 && titles[0] == "~~")
+            if (titles == null)
             {
-                titles.RemoveAt(0); // brise ~~
+                titles = new List<Movie>();
                 var data = GetData(findURL);
                 if (data == null || data["movie_results"]!.Count() == 0)
                 {
                     Console.WriteLine("Nema dostupnih filmova ili nisu adekvatno pribavljeni.");
-                    return new List<string>();
+                    return new List<Movie>();
                 }
                 foreach (var movie in data["movie_results"])
                 {
-                    string title = (string)movie["title"] + " (" + (string)movie["release_date"] + ")";
-                    titles.Add(title);
+                    Movie film = new Movie()
+                    {
+                        Title = (string)movie["title"],
+                        Description = (string)movie["overview"],
+                        Rating = (string)movie["vote_average"],
+                        Release_date = (string)movie["release_date"],
+                        Poster = (string)movie["poster_path"]
+                    };
+
+                    titles.Add(film);
                 }
                 MovieCache.writeInCache(new MovieCacheItem(titles, findURL));
             }
             return titles;
         }
-        public static List<string> discoverMoviesService(string parametri)
+        public static List<Movie> discoverMoviesService(string parametri)
         {
             string[] lista_parametri = parametri.Split(' ');
             string discoverURL = _baseURL + $"/discover/movie?";
-            List<string> titles = MovieCache.readFromCache(discoverURL);
+            List<Movie>? titles = MovieCache.readFromCache(discoverURL);
             foreach (var param in lista_parametri)
                 discoverURL += param + "&";
             discoverURL += $"api_key={_apiKey}";
 
-            if (titles.Count == 1 && titles[0] == "~~")
+            if (titles == null) 
             {
-                titles.RemoveAt(0); // brise ~~
+                titles = new List<Movie>();
                 var data = GetData(discoverURL);
                 if (data == null || data["results"]!.Count() == 0)
                 {
                     Console.WriteLine("Nema dostupnih filmova ili nisu adekvatno pribavljeni.");
-                    return new List<string>();
+                    return new List<Movie>();
                 }
                 foreach (var movie in data["results"])
                 {
-                    string title = (string)movie["title"] + " (" + (string)movie["release_date"] + ")";
-                    titles.Add(title);
+                    Movie film = new Movie()
+                    {
+                        Title = (string)movie["title"],
+                        Description = (string)movie["overview"],
+                        Rating = (string)movie["vote_average"],
+                        Release_date = (string)movie["release_date"],
+                        Poster = (string)movie["poster_path"]
+                    };
+
+                    titles.Add(film);
                 }
                 MovieCache.writeInCache(new MovieCacheItem(titles, discoverURL));
             }

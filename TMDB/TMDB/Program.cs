@@ -70,8 +70,7 @@ class Program
             parts[1] = parts[1].Substring(1).Replace("%20", " ");
             string[] parametri = parts[1].Split("/");
 
-            List<string> filmovi = new();
-
+            List<Movie> filmovi = new();
             switch (parametri[0]) 
             {
                 case "search":
@@ -88,7 +87,7 @@ class Program
             }
 
             foreach (var film in filmovi)
-                Console.WriteLine(film);
+                Console.WriteLine($"{film.Title} ({film.Release_date})  [{film.Rating}]\n {film.Description}\n");
         }
         catch (Exception ex)
         {

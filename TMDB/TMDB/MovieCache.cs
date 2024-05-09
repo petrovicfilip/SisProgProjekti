@@ -1,26 +1,14 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace TMDB
 {
-    public class MovieCacheItem
-    {
-        private List<string> _names;
-        private string _url;
-        public MovieCacheItem(List<string> names, string url)
-        {
-            _names = names;
-            _url = url;
-        }
-
-        public List<string> Names { get { return _names; } }
-        public string Url { get { return _url; } }
-        public void SetUrl(string url) { _url = url; }
-    }
     public static class MovieCache // LRU Cache !!!
     {
         private static readonly uint capacity = 1000; // za nase potrebe je dovoljno 1000, takodje koristimo benefit LRU-a bez bespotrebnog rasta kesa
@@ -28,9 +16,8 @@ namespace TMDB
         private static readonly Dictionary<string, LinkedListNode<MovieCacheItem>> cache = new Dictionary<string, LinkedListNode<MovieCacheItem>>();
         private static LinkedList<MovieCacheItem> _list = new LinkedList<MovieCacheItem>();
         private static readonly Object lockObject = new();
-        public static List<string> readFromCache(string url)
+        public static List<Movie>? readFromCache(string url)
         {
-            //LinkedListNode<MovieCacheItem> node = null;
             try
             {
                 if (cache.TryGetValue(url, out LinkedListNode<MovieCacheItem>? node))
@@ -41,16 +28,10 @@ namespace TMDB
                         _list.AddLast(node);
                     }
 
-                    return node.Value.Names;
+                    return node.Value.Movies;
                 }
                 else
-                {
-                    List<string> lista = new()
-                    {
-                        "~~"
-                    };
-                    return lista;
-                }
+                    return null;
             }
             catch (Exception e)
             {
@@ -58,7 +39,6 @@ namespace TMDB
                 throw; 
             }
         }
-
         public static void writeInCache(MovieCacheItem item)
         {
             lock (lockObject)
@@ -73,21 +53,22 @@ namespace TMDB
                     string key = _list.First().Url;
                     _list.RemoveFirst();
                     cache.Remove(key);
+
                 }
                 LinkedListNode<MovieCacheItem> itemNode = new LinkedListNode<MovieCacheItem>(item);
                 _list.AddLast(itemNode);
                 cache[item.Url] = itemNode;
             }
         }
-
         public static void printCacheValues()
         {
             foreach (var item in cache)
             {
                 Console.WriteLine("Za query :" + item.Key);
-                foreach (var name in item.Value.Value.Names)
+                foreach (var movie in item.Value.Value.Movies)
                 {
-                    Console.WriteLine(">" + name);
+                    Console.WriteLine(">" + movie.Title + " (" + movie.Release_date + ")  [" + movie.Rating + "]");
+                    Console.WriteLine(movie.Description + "\n");
                 }
             }
         }
