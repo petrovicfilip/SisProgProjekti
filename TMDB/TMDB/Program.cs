@@ -8,6 +8,7 @@ using System.Security.Policy;
 using System.Text;
 using System.Xml.Linq;
 using Newtonsoft.Json.Linq;
+using Python.Runtime;
 using TMDB;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 class Program
@@ -23,6 +24,19 @@ class Program
 
         Thread acceptThread = new Thread(() => serveClients(listener));
         acceptThread.Start();
+
+        Runtime.PythonDLL = @"C:\Users\BOBAN\AppData\Local\Programs\Python\Python311\python311.dll";
+
+        PythonEngine.Initialize();
+
+        using(Py.GIL())
+        {
+            dynamic sys = Py.Import("sys");
+            sys.path.append("C:\\SistemskoProgramiranjeGitHub\\SisProgProjekti\\TMDB\\TMDB");
+            var pythonScript = Py.Import("klijenti.py");
+            pythonScript.Invoke();
+        }
+
         Console.WriteLine("Pokrenuta Nit");
 
         Console.WriteLine("Unesi EXIT za kraj programa");
@@ -36,6 +50,8 @@ class Program
         listener.Stop();
 
         acceptThread.Join();
+
+        PythonEngine.Shutdown();
 
         return;
     }
