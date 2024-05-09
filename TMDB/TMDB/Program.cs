@@ -1,57 +1,98 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
+using System.Net.Sockets;
 using System.Security.Policy;
 using System.Text;
 using System.Xml.Linq;
 using Newtonsoft.Json.Linq;
 using TMDB;
-
-
-/*/search - Text based search is the most common way. You provide a query string and we provide the closest match.
- * Searching by text takes into account all original, translated, alternative names and titles.
-/discover - Sometimes it useful to search for movies and TV shows based on filters or definable values like ratings, 
-certifications or release dates. The discover method make this easy.
-/find - The last but still very useful way to find data is with existing external IDs. For example,
-if you know the IMDB ID of a movie, TV show or person, you can plug that value into this method and we'll return anything that matches.
-This can be very useful when you have an existing tool and are adding our service to the mix.*/
+using static System.Runtime.InteropServices.JavaScript.JSType;
 class Program
 {
+    static TcpListener listener = new TcpListener(IPAddress.Any, 5050);
+    static HttpClient client = new HttpClient();
+    static bool END = false;
 
-
-    static void Main(string[] args)
+    public static void Main(System.String[] args)
     {
+        listener.Start();
+        Console.WriteLine("Listening...");
 
-        
-       // mv.findMovieService("Jack Sparrow");
+        Thread acceptThread = new Thread(() => serveClients(listener));
+        acceptThread.Start();
+        Console.WriteLine("Pokrenuta Nit");
 
-       List<string> list = new List<string>();
-       list.Add("include_adult=false");
+        Console.WriteLine("Unesi EXIT za kraj programa");
 
-       List<string> lista = MovieService.searchMovieService("Titanic");
-        foreach (var item in lista) 
-        {
-            Console.WriteLine(item);
-        }
+        string? exit;
+        do
+            exit = Console.ReadLine();
+        while (exit.ToUpper() != "EXIT");
 
-        Console.WriteLine("..........................................");
+        END = true;
+        listener.Stop();
 
-        List<string> lista2 = MovieService.searchMovieService("Titanic");
-        foreach (var item in lista2)
-        {
-            Console.WriteLine(item);
-        }
+        acceptThread.Join();
 
-        Console.WriteLine("..........................................");
-
-        MovieCache.printCacheValues();
-
-        //  LinkedListNode<int,int> = new LinkedListNode(new int[0]);   
-        //string query = Console.ReadLine();
-        //searchMovieService(query);
-        //findMovieService(query);
+        return;
     }
 
-    
+    static private void serveClients(TcpListener listener)
+    {
+        while (!END)
+        {
+            try
+            {
+                TcpClient client = listener.AcceptTcpClient();
+                ThreadPool.QueueUserWorkItem(clientRequest, client);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+    }
+
+    static void clientRequest(object? tcp_client)
+    {
+        TcpClient client = (TcpClient)tcp_client;
+        NetworkStream stream = client.GetStream();
+        StreamReader reader = new StreamReader(stream);
+        StreamWriter writer = new StreamWriter(stream);
+            
+        try
+        {
+            string input = reader.ReadLine();
+            string[] parts = input.Split(' ');
+            parts[1] = parts[1].Substring(1).Replace("%20", " ");
+            string[] parametri = parts[1].Split("/");
+
+            List<string> filmovi = new();
+
+            switch (parametri[0]) 
+            {
+                case "search":
+                    filmovi = MovieService.searchMovieService(parametri[1]);
+                    break;
+                case "find":
+                    filmovi = MovieService.findMovieService(parametri[1]);
+                    break;
+                case "discover":
+                    filmovi = MovieService.discoverMoviesService(parametri[1]);
+                    break;
+                default:
+                    throw new Exception("Nije dobar zahtev ka Web Serveru!");
+            }
+
+            foreach (var film in filmovi)
+                Console.WriteLine(film);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
 }

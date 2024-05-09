@@ -47,7 +47,7 @@ namespace TMDB
             {
                 titles.RemoveAt(0); // brise ~~
                 var data = GetData(findURL);
-                if (data == null || data["results"].Count() == 0)
+                if (data == null || data["movie_results"]!.Count() == 0)
                 {
                     Console.WriteLine("Nema dostupnih filmova ili nisu adekvatno pribavljeni.");
                     return new List<string>();
@@ -61,11 +61,12 @@ namespace TMDB
             }
             return titles;
         }
-        public static List<string> discoverMoviesService(List<string> parametri)
+        public static List<string> discoverMoviesService(string parametri)
         {
+            string[] lista_parametri = parametri.Split(' ');
             string discoverURL = _baseURL + $"/discover/movie?";
             List<string> titles = MovieCache.readFromCache(discoverURL);
-            foreach (var param in parametri)
+            foreach (var param in lista_parametri)
                 discoverURL += param + "&";
             discoverURL += $"api_key={_apiKey}";
 
@@ -73,7 +74,7 @@ namespace TMDB
             {
                 titles.RemoveAt(0); // brise ~~
                 var data = GetData(discoverURL);
-                if (data == null || data["results"].Count() == 0)
+                if (data == null || data["results"]!.Count() == 0)
                 {
                     Console.WriteLine("Nema dostupnih filmova ili nisu adekvatno pribavljeni.");
                     return new List<string>();

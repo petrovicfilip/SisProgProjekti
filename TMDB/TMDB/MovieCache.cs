@@ -45,17 +45,17 @@ namespace TMDB
                 }
                 else
                 {
-                    //throw new KeyNotFoundException($"Nije pronadjena vrednost za kljuc {url}...");
                     List<string> lista = new()
                     {
                         "~~"
-                    }; // ovo ce vidimo sta da mu radimo
+                    };
                     return lista;
                 }
             }
             catch (Exception e)
             {
-                throw; // isto ko za else blok razmisliti aka izbrisati...
+                Console.WriteLine(e.ToString());
+                throw; 
             }
         }
 
