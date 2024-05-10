@@ -14,21 +14,20 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 class Program
 {
-    static TcpListener listener = new TcpListener(IPAddress.Any, 5050);
+    static int port = 5500;
+    static TcpListener listener = new TcpListener(IPAddress.Any, port);
     static HttpClient client = new HttpClient();
     static bool END = false;
 
     public static void Main(System.String[] args)
     {
         listener.Start();
-        Console.WriteLine("Listening...");
+        Console.WriteLine("Slusam na portu " + port);
 
         Thread acceptThread = new Thread(() => serveClients(listener));
         acceptThread.Start();
 
         //PyTesting.Test();
-
-        Console.WriteLine("Pokrenuta Nit");
 
         Console.WriteLine("Unesi EXIT za kraj programa");
 
