@@ -3,12 +3,10 @@ import threading
 
 def send_request():
     try:
-        # Konektujemo se na server
         conn = http.client.HTTPConnection("localhost", 5050)
         
         conn.request("GET", "/search/Titanic")
         
-        # Dobijamo odgovor
         response = conn.getresponse()
         print(f"Response from server: {response.status}")
         
