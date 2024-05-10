@@ -119,6 +119,9 @@ namespace TMDB
             try
             {
                 HttpResponseMessage response = client.GetAsync(url).Result;
+
+                Console.WriteLine(response.ToString());
+
                 if (!response.IsSuccessStatusCode)
                 {
                     throw new HttpRequestException($"Greska prilikom rada sa API-em");
@@ -131,6 +134,9 @@ namespace TMDB
                 }
 
                 string responseBody = Encoding.UTF8.GetString(bytes);
+
+               Console.WriteLine(JObject.Parse(responseBody));
+
                 return JObject.Parse(responseBody);
             }
             catch (Exception ex)

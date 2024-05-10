@@ -11,6 +11,7 @@ using Newtonsoft.Json.Linq;
 using Python.Runtime;
 using TMDB;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+
 class Program
 {
     static TcpListener listener = new TcpListener(IPAddress.Any, 5050);
@@ -25,17 +26,15 @@ class Program
         Thread acceptThread = new Thread(() => serveClients(listener));
         acceptThread.Start();
 
-        Runtime.PythonDLL = @"C:\Users\BOBAN\AppData\Local\Programs\Python\Python311\python311.dll";
-
-        PythonEngine.Initialize();
-
-        using(Py.GIL())
-        {
-            dynamic sys = Py.Import("sys");
-            sys.path.append("C:\\SistemskoProgramiranjeGitHub\\SisProgProjekti\\TMDB\\TMDB");
-            var pythonScript = Py.Import("klijenti.py");
-            pythonScript.Invoke();
-        }
+        //Runtime.PythonDLL = @"C:\Users\vukas\AppData\Local\Programs\Python\Python312\python312.dll";
+        //PythonEngine.Initialize();
+        //using(Py.GIL())
+        //{
+        //    dynamic sys = Py.Import("sys");
+        //    sys.path.append("C:\\Users\\vukas\\source\\repos\\Sistemsko programiranje\\PROJEKATI\\TMDB\\SisProgProjekti\\TMDB\\TMDB");
+        //    var pythonScript = Py.Import("klijenti.py");
+        //    pythonScript.Invoke();
+        //}
 
         Console.WriteLine("Pokrenuta Nit");
 
@@ -51,7 +50,7 @@ class Program
 
         acceptThread.Join();
 
-        PythonEngine.Shutdown();
+        //PythonEngine.Shutdown();
 
         return;
     }
@@ -102,8 +101,9 @@ class Program
                     throw new Exception("Nije dobar zahtev ka Web Serveru!");
             }
 
-            foreach (var film in filmovi)
-                Console.WriteLine($"{film.Title} ({film.Release_date})  [{film.Rating}]\n {film.Description}\n");
+            string response = Appearance.DrawPage(filmovi);
+
+            writer.Write(response);
         }
         catch (Exception ex)
         {
