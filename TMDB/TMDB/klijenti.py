@@ -14,7 +14,7 @@ def send_request():
     except Exception as e:
         print(f"Error: {e}")
 
-num_clients = 10
+num_clients = 50
 
 threads = []
 

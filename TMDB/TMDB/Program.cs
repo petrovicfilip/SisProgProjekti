@@ -26,15 +26,7 @@ class Program
         Thread acceptThread = new Thread(() => serveClients(listener));
         acceptThread.Start();
 
-        //Runtime.PythonDLL = @"C:\Users\vukas\AppData\Local\Programs\Python\Python312\python312.dll";
-        //PythonEngine.Initialize();
-        //using(Py.GIL())
-        //{
-        //    dynamic sys = Py.Import("sys");
-        //    sys.path.append("C:\\Users\\vukas\\source\\repos\\Sistemsko programiranje\\PROJEKATI\\TMDB\\SisProgProjekti\\TMDB\\TMDB");
-        //    var pythonScript = Py.Import("klijenti.py");
-        //    pythonScript.Invoke();
-        //}
+        //PyTesting.Test();
 
         Console.WriteLine("Pokrenuta Nit");
 
@@ -102,6 +94,9 @@ class Program
             }
 
             string response = Appearance.DrawPage(filmovi);
+
+            foreach(var film in filmovi)
+                Console.WriteLine(film.Title);
 
             writer.Write(response);
         }
