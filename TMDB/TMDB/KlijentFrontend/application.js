@@ -25,11 +25,8 @@ export class Application
         let cont = document.createElement("div");
 
         let divSearch = document.createElement("div");
-        //divSearch.innerHTML = "Kurac";
         let divFind = document.createElement("div");
-        //divFind.innerHTML = "Picka";
         let divDiscover = document.createElement("div");
-        //divDiscover.innerHTML = "Sisa";
 
         cont.classList.add("father");
         divSearch.classList.add("search");
