@@ -110,7 +110,15 @@ export class Application
         container.appendChild(btn);
               
     }
-    drawDiscover(container){return;}
+    drawDiscover(container)
+    {
+
+
+
+
+
+
+    }
 
     posalji = async(num) =>
     {

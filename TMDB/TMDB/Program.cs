@@ -24,6 +24,8 @@ class Program
         listener.Start();
         Console.WriteLine("Slusam na portu " + port);
 
+        //ThreadPool.SetMinThreads(16, 16);
+
         Thread acceptThread = new Thread(() => serveClients(listener));
         acceptThread.Start();
 
