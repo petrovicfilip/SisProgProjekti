@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+                <html lang=""en"">
+                <head>
+                    <meta charset=""UTF-8"">
+                    <title>Lista Filmova</title>
+                    <style>
+                        body {
+                             background-color: azure;
+                             font-family: arial;
+                        }
+                        .film {
+                            margin-bottom: 20px;
+                            padding: 10px;
+                            border: 10px solid #880000;
+                            background-color: #ffcccc;
+                            border-radius: 20px;
+                        }
+                        .film h1 {
+                            margin-bottom: 5px;
+                            color: #333;
+                        }
+                        .film p {
+                            margin-top: 0;
+                            color: #666;
+                        }
+                    </style>
+                </head>
+                <body >

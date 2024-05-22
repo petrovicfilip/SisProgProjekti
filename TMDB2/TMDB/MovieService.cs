@@ -1,0 +1,162 @@
+﻿using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection.Metadata;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace TMDB
+{
+
+    internal class MovieService
+    {
+        private static readonly string _apiKey = "425f3c1ae557e64fe442891e70cee6a1";
+        private static readonly string _baseURL = "https://api.themoviedb.org/3";
+
+        public static async Task<List<Movie>> searchMovieServiceAsync(string query)
+        {
+            string searchURL = _baseURL + $"/search/movie?query={query}&api_key={_apiKey}";
+            List<Movie> titles = MovieCache.readFromCache(searchURL);
+
+            if (titles == null)
+            {
+                titles = new List<Movie>();
+
+                var data = await GetDataAsync(searchURL);
+
+                if (data == null || data["results"]?.Count() == 0)
+                {
+                    Console.WriteLine("Nema dostupnih filmova ili nisu adekvatno pribavljeni.");
+                    return new List<Movie>();
+                }
+
+                foreach (var movie in data["results"])
+                {
+                    Movie film = new Movie()
+                    {
+                        Title = (string)movie["title"],
+                        Description = (string)movie["overview"],
+                        Rating = (string)movie["vote_average"],
+                        Release_date = (string)movie["release_date"],
+                        Poster = (string)movie["poster_path"]
+                    };
+
+                    titles.Add(film);
+                }
+                MovieCache.writeInCache(new MovieCacheItem(titles, searchURL));
+            }
+            return titles;
+        }
+
+        public static async Task<List<Movie>> findMovieServiceAsync(string imdbID)
+        {
+            string findURL = _baseURL + $"/find/{imdbID}?external_source=imdb_id&api_key={_apiKey}";
+            List<Movie> titles = MovieCache.readFromCache(findURL);
+
+            if (titles == null)
+            {
+                titles = new List<Movie>();
+                var data = await GetDataAsync(findURL);
+
+                if (data == null || data["movie_results"]?.Count() == 0)
+                {
+                    Console.WriteLine("Nema dostupnih filmova ili nisu adekvatno pribavljeni.");
+                    return new List<Movie>();
+                }
+
+                foreach (var movie in data["movie_results"])
+                {
+                    Movie film = new Movie()
+                    {
+                        Title = (string)movie["title"],
+                        Description = (string)movie["overview"],
+                        Rating = (string)movie["vote_average"],
+                        Release_date = (string)movie["release_date"],
+                        Poster = (string)movie["poster_path"]
+                    };
+
+                    titles.Add(film);
+                }
+                MovieCache.writeInCache(new MovieCacheItem(titles, findURL));
+            }
+            return titles;
+        }
+
+        public static async Task<List<Movie>> discoverMoviesServiceAsync(string parametri)
+        {
+            string[] lista_parametri = parametri.Split(' ');
+            string discoverURL = _baseURL + $"/discover/movie?";
+            foreach (var param in lista_parametri)
+                discoverURL += param + "&";
+            discoverURL += $"api_key={_apiKey}";
+
+            List<Movie> titles = MovieCache.readFromCache(discoverURL);
+
+            if (titles == null)
+            {
+                titles = new List<Movie>();
+                var data = await GetDataAsync(discoverURL);
+
+                if (data == null || data["results"]?.Count() == 0)
+                {
+                    Console.WriteLine("Nema dostupnih filmova ili nisu adekvatno pribavljeni.");
+                    return new List<Movie>();
+                }
+
+                foreach (var movie in data["results"])
+                {
+                    Movie film = new Movie()
+                    {
+                        Title = (string)movie["title"],
+                        Description = (string)movie["overview"],
+                        Rating = (string)movie["vote_average"],
+                        Release_date = (string)movie["release_date"],
+                        Poster = (string)movie["poster_path"]
+                    };
+
+                    titles.Add(film);
+                }
+                MovieCache.writeInCache(new MovieCacheItem(titles, discoverURL));
+            }
+            return titles;
+        }
+
+        private static async Task<JObject> GetDataAsync(string url)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync(url);//.Resoult()
+
+                    Console.WriteLine(response.ToString());
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        throw new HttpRequestException("Greska prilikom rada sa API-em");
+                    }
+
+                    byte[] bytes = await response.Content.ReadAsByteArrayAsync();//.Resoult()
+
+                    if (bytes.Length == 0)
+                    {
+                        throw new Exception("Dobijen prazan odgovor");
+                    }
+
+                    string responseBody = Encoding.UTF8.GetString(bytes);
+
+                    Console.WriteLine(JObject.Parse(responseBody));
+
+                    return JObject.Parse(responseBody);
+                }
+                catch (Exception ex)
+                {
+                    Console.Write($"Greska prilikom izvrsenja: {ex.Message}");
+                    return new JObject();
+                }
+            }
+        }
+    }
+
+}
