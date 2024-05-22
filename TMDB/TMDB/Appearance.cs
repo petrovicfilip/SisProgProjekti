@@ -17,7 +17,7 @@ namespace TMDB
                 forma.Append("<div class=\"film\">");
                 forma.Append($"<h1>{film.Title} ({film.Release_date}) [{film.Rating}]</h1>");
                 forma.Append($"<p>{film.Description}</p>");
-                //forma.Append($"<img src=\"https://image.tmdb.org/t/p/w500{film.Poster}\" ></img>");
+                forma.Append($"<img src=\"https://image.tmdb.org/t/p/w500{film.Poster}\" ></img>");
                 forma.Append("</div>");
             }
 

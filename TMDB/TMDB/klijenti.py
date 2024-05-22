@@ -3,7 +3,7 @@ import threading
 
 def send_request():
     try:
-        conn = http.client.HTTPConnection("localhost", 5050)
+        conn = http.client.HTTPConnection("localhost", 5500)
         
         conn.request("GET", "/search/Titanic")
         
@@ -14,7 +14,7 @@ def send_request():
     except Exception as e:
         print(f"Error: {e}")
 
-num_clients = 50
+num_clients = 10
 
 threads = []
 

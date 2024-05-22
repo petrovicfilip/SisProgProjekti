@@ -135,7 +135,7 @@ namespace TMDB
 
                 string responseBody = Encoding.UTF8.GetString(bytes);
 
-               Console.WriteLine(JObject.Parse(responseBody));
+                Console.WriteLine(JObject.Parse(responseBody));
 
                 return JObject.Parse(responseBody);
             }
