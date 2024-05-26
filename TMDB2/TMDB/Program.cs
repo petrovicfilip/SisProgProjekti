@@ -17,8 +17,6 @@ class Program
     static TcpListener listener = new TcpListener(IPAddress.Any, port);
     static bool END = false;
 
- //   EnableCorsAttribute cors = new EnableCorsAttribute("*", "*", "*");
-
     public static async Task Main(string[] args)
     {
         listener.Start();
@@ -96,7 +94,6 @@ class Program
                         throw new Exception("Invalid request to Web Server!");
                 }
 
-               //string response = Appearance.DrawPage(movies);
                 string response = JsonSerializer.Serialize(movies);
                 foreach (var movie in movies)
                     Console.WriteLine(movie.Title);

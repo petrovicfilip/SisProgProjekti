@@ -11,15 +11,15 @@ namespace TMDB
     {
         public static void Test()
         {
-            Runtime.PythonDLL = @"C:\Users\vukas\AppData\Local\Programs\Python\Python312\python312.dll";
-            //Runtime.PythonDLL = @"C:\Users\BOBAN\AppData\Local\Programs\Python\Python311\python311.dll";
+            //Runtime.PythonDLL = @"C:\Users\vukas\AppData\Local\Programs\Python\Python312\python312.dll";
+            Runtime.PythonDLL = @"C:\Users\BOBAN\AppData\Local\Programs\Python\Python311\python311.dll";
 
             PythonEngine.Initialize();
             using (Py.GIL())
             {
                 dynamic sys = Py.Import("sys");
-                sys.path.append("C:\\Users\\vukas\\source\\repos\\Sistemsko programiranje\\PROJEKATI\\TMDB\\SisProgProjekti\\TMDB\\TMDB");
-                //sys.path.append("C:\\SistemskoProgramiranjeGitHub\\SisProgProjekti\\TMDB\\TMDB");
+                //sys.path.append("C:\\Users\\vukas\\source\\repos\\Sistemsko programiranje\\PROJEKATI\\TMDB\\SisProgProjekti\\TMDB\\TMDB");
+                sys.path.append("C:\\SistemskoProgramiranjeGitHub\\SisProgProjekti\\TMDB2\\TMDB");
                 var pythonScript = Py.Import("klijenti.py");
                 pythonScript.Invoke();
             }

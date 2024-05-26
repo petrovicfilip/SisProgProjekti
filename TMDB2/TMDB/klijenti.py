@@ -1,20 +1,32 @@
 import http.client
 import threading
 
+line = 0
+mutex = threading.Lock()
+
 def send_request():
+    global line
     try:
         conn = http.client.HTTPConnection("localhost", 5500)
-        
-        conn.request("GET", "/search/Titanic")
-        
+        beg = 'C:\\SistemskoProgramiranjeGitHub\\SisProgProjekti\\TMDB2\\TMDB\\'
+        with open(beg + 'filmovi.txt', 'r') as file:
+            with mutex:
+                for _ in range(line):
+                    file.readline()
+                movie = file.readline()
+                line += 1
+                line %= 50
+
+        conn.request("GET", "/search/" + movie.strip())
+
         response = conn.getresponse()
         print(f"Response from server: {response.status}")
-        
+
         conn.close()
     except Exception as e:
         print(f"Error: {e}")
 
-num_clients = 100
+num_clients = 200
 
 threads = []
 
