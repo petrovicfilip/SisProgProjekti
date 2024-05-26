@@ -128,7 +128,7 @@ namespace TMDB
             {
                 try
                 {
-                    HttpResponseMessage response = await client.GetAsync(url);//.Resoult()
+                    HttpResponseMessage response = await client.GetAsync(url);//.Result()
 
                     Console.WriteLine(response.ToString());
 
@@ -137,7 +137,7 @@ namespace TMDB
                         throw new HttpRequestException("Greska prilikom rada sa API-em");
                     }
 
-                    byte[] bytes = await response.Content.ReadAsByteArrayAsync();//.Resoult()
+                    byte[] bytes = await response.Content.ReadAsByteArrayAsync();//.Result()
 
                     if (bytes.Length == 0)
                     {

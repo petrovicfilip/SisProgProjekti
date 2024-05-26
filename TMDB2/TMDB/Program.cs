@@ -6,12 +6,18 @@ using System.Threading.Tasks;
 using System.IO;
 using TMDB;
 using Python.Runtime;
-
+using System.Web.Http.Cors;
+using System.Text;
+using System.Collections;
+using System.Text.Json;
+using System.Net.Http;
 class Program
 {
     static int port = 5500;
     static TcpListener listener = new TcpListener(IPAddress.Any, port);
     static bool END = false;
+
+ //   EnableCorsAttribute cors = new EnableCorsAttribute("*", "*", "*");
 
     public static async Task Main(string[] args)
     {
@@ -58,14 +64,14 @@ class Program
 
     static async Task HandleClientRequestAsync(TcpClient tcpClient)
     {
-        NetworkStream stream = tcpClient.GetStream();
-        StreamReader reader = new StreamReader(stream);
-        StreamWriter writer = new StreamWriter(stream);
-        /*
+        /*      NetworkStream stream = tcpClient.GetStream();
+                StreamReader reader = new StreamReader(stream);
+                StreamWriter writer = new StreamWriter(stream);*/
+
         using (NetworkStream stream = tcpClient.GetStream())
         using (StreamReader reader = new StreamReader(stream))
         using (StreamWriter writer = new StreamWriter(stream) { AutoFlush = true })
-        */
+
         {
             try
             {
@@ -90,12 +96,24 @@ class Program
                         throw new Exception("Invalid request to Web Server!");
                 }
 
-               string response = Appearance.DrawPage(movies);
-
+               //string response = Appearance.DrawPage(movies);
+                string response = JsonSerializer.Serialize(movies);
                 foreach (var movie in movies)
                     Console.WriteLine(movie.Title);
 
-               await writer.WriteAsync(response);
+                if (movies.Count > 0)
+                    response = "HTTP/2.0 200 OK\r\n" +
+                                  "Access-Control-Allow-Origin:" + " http://127.0.1.1:5050" + "\r\n" +
+                                  "Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS\r\n" +
+                                  "Access-Control-Allow-Headers: Content-Type\r\n" +
+                                  "Content-Length: " + Encoding.UTF8.GetByteCount(response) + "\r\n" +
+                                  "Content-Type: application/json; charset=UTF-8\r\n" +
+                                  "\r\n" + response;
+                else
+                    response = File.ReadAllText("C:\\SistemskoProgramiranjeGitHub\\SisProgProjekti\\TMDB2\\TMDB\\badresponse.txt");
+                //await writer.WriteAsync(response);
+                byte[] respb = Encoding.UTF8.GetBytes(response);
+                await stream.WriteAsync(respb, 0, respb.Length);
             }
             catch (Exception ex)
             {

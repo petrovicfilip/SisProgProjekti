@@ -5,12 +5,13 @@ body{
 {
     display: flex;
     flex-direction: row;
-	flex-wrap:wrap;
-    border: 3px solid black;
+	  flex-wrap:wrap;
+    border: 3px solid aqua;
     border-radius: 10px;
     margin: 10px;
     padding: 10px;
     background-color: azure;
+    justify-content: space-between;
 }
 
 .search
@@ -18,9 +19,10 @@ body{
     margin: 10px;
     display: grid;
     grid-template-rows: 1fr 1fr;
-    border: 3px dotted aqua;
+    border: 3px solid aqua;
     border-radius:20px;
     align-content: center;
+    font-weight: bold;
 
 }
 
@@ -39,26 +41,34 @@ body{
   margin: 10px;
   display: grid;
   grid-template-rows: 1fr 1fr;
-  border: 3px dotted aqua;
+  border: 3px solid aqua;
   border-radius:20px;
   align-content: center;
+  font-weight: bold;
 }
 
 .discover
 {
-    margin: 10px;
-
+  margin: 10px;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  border: 3px solid aqua;
+  border-radius:20px;
+  align-content: center;
+  font-weight: bold;
 }
 
 .elementi-search
 {
-    display: flex;
-    align-items: center;
+    display: grid ;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
 }
 
 
 .buttons {
-  background-color: #0a6bff;
+  /* background-color: #0a6bff; */
+  background-color:aqua;
   border-radius: 4px;
   border: 0;
   box-shadow: rgba(1,60,136,.5) 0 -1px 3px 0 inset,rgba(0,44,97,.1) 0 3px 6px 0;
@@ -93,4 +103,73 @@ body{
     padding: 16px 44px;
     min-width: 150px;
   }
+}
+.input-stil
+{
+  color: rgba(0,0,0,.87);
+  border-bottom-color: rgba(0,0,0,.42);
+  /* font-size: 1rem; */
+  font-weight: 100;
+  letter-spacing: .009375em;
+  text-decoration: inherit;
+  text-transform: inherit;
+  align-self: flex-end;
+  box-sizing: border-box;
+  width: 90%;
+  padding: 5px 4px 1px;
+  transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  border: none;
+  border-bottom: 1px solid;
+  border-radius: 1px 1px 0 0;
+  background: rgb(245, 245, 245);
+  :hover{
+      border-bottom-color: rgba(0,0,0,.87);
+      background: red;
+  }
+  :focus{
+      border-color: #6200ee;
+  }
+}
+.movie-box
+{
+  display: grid;
+  background-color:lightcyan;
+  grid-template-rows: 1fr 1fr;
+  font-family: Arial, Helvetica, sans-serif;
+  border: 3px solid aqua;
+  border-radius: 10px;
+  margin: 1%;
+}
+
+.naslov-film
+{
+  display: flex;
+  flex-direction: column;
+}
+
+.naslov-i-ocena
+{
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  font-size: 25px;
+  font-weight: bold;
+  margin: 10px;
+  border: 3px solid cyan;
+  border-radius: 10px;
+}
+
+.opis-i-slika
+{
+  display: flex;
+}
+
+.slikaplusopis
+{
+  border-radius: 10px;
+  border-style: double;
+  border-color: cyan;
+  margin: 2%;
+  padding: 2%;
+  font-size: 22px;
 }
