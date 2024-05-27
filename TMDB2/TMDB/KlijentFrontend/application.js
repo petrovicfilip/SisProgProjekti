@@ -132,12 +132,15 @@ export class Application
 
                 let select = document.createElement("select");
                 select.style.margin = "10px";
-                select.classList.add(`${p.klasa}`);
+                select.style.backgroundColor = "rgb(245, 245, 245)";
+                select.classList.add(`${p.klasa}`,"select");
 
                 let t = document.createElement("option");
                 t.innerHTML = "true";
                 let f = document.createElement("option");
                 f.innerHTML = "false";
+                t.style.backgroundColor = "rgb(245, 245, 245)";
+                f.style.backgroundColor = "rgb(245, 245, 245)";
 
                 select.appendChild(t);
                 select.appendChild(f);

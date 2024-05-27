@@ -173,3 +173,10 @@ body{
   padding: 2%;
   font-size: 22px;
 }
+
+.select 
+{
+  background-color = rgb(245, 245, 245);
+  border: black;
+  border-bottom: solid 1px;
+}
