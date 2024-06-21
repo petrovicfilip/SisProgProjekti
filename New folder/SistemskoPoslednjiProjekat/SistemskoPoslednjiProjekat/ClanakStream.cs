@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reactive.Concurrency;
+using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace SistemskoPoslednjiProjekat
@@ -16,22 +17,25 @@ namespace SistemskoPoslednjiProjekat
             try
             {
                 var articles = await _clanakService.FetchClanciAsync(query);
-               
+
                 foreach (var article in articles)
                 {
-                        _clanakSubject.OnNext(article);
+                    _clanakSubject.OnNext(article);
                 }
                 _clanakSubject.OnCompleted();
             }
             catch (Exception ex)
-            { 
+            {
                 _clanakSubject.OnError(ex);
             }
         }
 
         public IDisposable Subscribe(IObserver<Clanak> observer)
         {
-            return _clanakSubject.Subscribe(observer);
+            return _clanakSubject
+                .SubscribeOn(TaskPoolScheduler.Default)
+                .ObserveOn(NewThreadScheduler.Default)
+                .Subscribe(observer);
         }
     }
 }
