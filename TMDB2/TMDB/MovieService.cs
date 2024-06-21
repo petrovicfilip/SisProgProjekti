@@ -23,7 +23,7 @@ namespace TMDB
             {
                 titles = new List<Movie>();
 
-                var data = await GetDataAsync(searchURL);
+                var data = await GetDataAsync(searchURL); ///
 
                 if (data == null || data["results"]?.Count() == 0)
                 {
@@ -57,7 +57,7 @@ namespace TMDB
             if (titles == null)
             {
                 titles = new List<Movie>();
-                var data = await GetDataAsync(findURL);
+                var data = await GetDataAsync(findURL); ///
 
                 if (data == null || data["movie_results"]?.Count() == 0)
                 {
@@ -96,7 +96,7 @@ namespace TMDB
             if (titles == null)
             {
                 titles = new List<Movie>();
-                var data = await GetDataAsync(discoverURL);
+                var data = await GetDataAsync(discoverURL); ///
 
                 if (data == null || data["results"]?.Count() == 0)
                 {

@@ -24,7 +24,7 @@ class Program
 
         var acceptTask = serveClientsAsync(listener);
 
-        //PyTesting.Test();
+        PyTesting.Test();
 
         Console.WriteLine("Enter EXIT to end the program");
 
@@ -38,7 +38,7 @@ class Program
 
         await acceptTask;
 
-        //PythonEngine.Shutdown();
+        PythonEngine.Shutdown();
 
         return;
     }
@@ -50,7 +50,7 @@ class Program
             try
             {
                 var tcpClient = await listener.AcceptTcpClientAsync();
-                await Task.Run(() => HandleClientRequestAsync(tcpClient));
+                await HandleClientRequestAsync(tcpClient);
 
             }
             catch (Exception e)
@@ -98,7 +98,7 @@ class Program
                 foreach (var movie in movies)
                     Console.WriteLine(movie.Title);
 
-                if (movies.Count > 0)
+               /* if (movies.Count > 0)
                     response = "HTTP/2.0 200 OK\r\n" +
                                   "Access-Control-Allow-Origin:" + " http://127.0.1.1:5050" + "\r\n" +
                                   "Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS\r\n" +
@@ -110,7 +110,7 @@ class Program
                     response = File.ReadAllText("C:\\SistemskoProgramiranjeGitHub\\SisProgProjekti\\TMDB2\\TMDB\\badresponse.txt");
                 //await writer.WriteAsync(response);
                 byte[] respb = Encoding.UTF8.GetBytes(response);
-                await stream.WriteAsync(respb, 0, respb.Length);
+                await stream.WriteAsync(respb, 0, respb.Length);*/
             }
             catch (Exception ex)
             {

@@ -171,7 +171,7 @@ body{
   border-color: cyan;
   margin: 2%;
   padding: 2%;
-  font-size: 22px;
+  font-size: 18px;
 }
 
 .select 
@@ -179,4 +179,8 @@ body{
   background-color = rgb(245, 245, 245);
   border: black;
   border-bottom: solid 1px;
+}
+
+img{
+    height:400px;
 }
