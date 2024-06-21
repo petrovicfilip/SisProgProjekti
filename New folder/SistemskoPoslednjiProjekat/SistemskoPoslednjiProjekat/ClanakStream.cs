@@ -1,36 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reactive.Subjects;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SistemskoPoslednjiProjekat
 {
     public class ClanakStream : IObservable<Clanak>
     {
-        private readonly Subject<Clanak> clanakSubject = new Subject<Clanak>();
-        private readonly ClanakService clanakService = new ClanakService();
+        private readonly Subject<Clanak> _clanakSubject = new Subject<Clanak>();
+        private readonly ClanakService _clanakService = new ClanakService();
+
         public async Task GetArticlesAsync(string query)
         {
             try
             {
-                var articles = await clanakService.FetchClanciAsync(query);
+                var articles = await _clanakService.FetchClanciAsync(query);
+               
                 foreach (var article in articles)
                 {
-                    clanakSubject.OnNext(article);
+                        _clanakSubject.OnNext(article);
                 }
-                clanakSubject.OnCompleted();
+                _clanakSubject.OnCompleted();
             }
             catch (Exception ex)
-            {
-                clanakSubject.OnError(ex);
+            { 
+                _clanakSubject.OnError(ex);
             }
         }
 
         public IDisposable Subscribe(IObserver<Clanak> observer)
         {
-            return clanakSubject.Subscribe(observer);
+            return _clanakSubject.Subscribe(observer);
         }
     }
 }

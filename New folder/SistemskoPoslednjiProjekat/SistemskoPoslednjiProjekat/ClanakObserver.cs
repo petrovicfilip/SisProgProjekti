@@ -1,34 +1,31 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SistemskoPoslednjiProjekat
 {
-    public class ArticleObserver : IObserver<Clanak>
+    public class ClanakObserver : IObserver<Clanak>
     {
-        //private readonly string title;
-        public ArticleObserver(string name)
+        private readonly string _name;
+
+        public ClanakObserver(string name)
         {
-            //this.name = name;
+            _name = name;
         }
 
         public void OnNext(Clanak article)
         {
-            Console.WriteLine($"Author: {article.Author}\n\n Title: {article.Tilte}\n\n" +
-                              $"Desctription: {article.Description}\n\nObjavljeno: {article.publishedAt}\n\n" +
-                              $"Content: {article.Content}\n\n");
+            Console.WriteLine($"Author: {article.Author}\nTitle: {article.Tilte}\n" +
+                              $"Description: {article.Description}\nPublished: {article.publishedAt}\n" +
+                              $"Content: {article.Content}\n");
         }
 
         public void OnError(Exception e)
         {
-            Console.WriteLine($"Doslo je do greske!: {e.Message}");
+            Console.WriteLine($"Error occurred: {e.Message}\n");
         }
 
         public void OnCompleted()
         {
-            Console.WriteLine($"Svi clanci su uspesno pribavljeni.");
+            Console.WriteLine("All articles have been successfully retrieved.");
         }
     }
 }
