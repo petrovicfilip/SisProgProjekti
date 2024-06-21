@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace SistemskoPoslednjiProjekat
 {
-    internal class Program
+    public class Program
     {
-        static void Main(string[] args)
+        async static Task Main(string[] args)
         {
+         
         }
     }
 }
