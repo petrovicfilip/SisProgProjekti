@@ -18,7 +18,7 @@ namespace SistemskoPoslednjiProjekat
             var url = $"https://newsapi.org/v2/everything?q={Uri.EscapeDataString(query)}&sortBy=popularity&apiKey={_apiKey}";
             Console.WriteLine($"Fetching URL: {url}");
 
-            // Dodavanje User-Agent header-a
+            //Mora inace se ucek vraca 400 status code
             _client.DefaultRequestHeaders.Add("User-Agent", "SistemskoPoslednjiProjekat/1.0");
 
             try
@@ -28,10 +28,9 @@ namespace SistemskoPoslednjiProjekat
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    // Log the detailed error message from the response
                     var errorContent = await response.Content.ReadAsStringAsync();
                     Console.WriteLine($"Error Response: {errorContent}");
-                    response.EnsureSuccessStatusCode(); // This will throw an exception with the status code
+                    response.EnsureSuccessStatusCode();
                 }
 
                 var content = await response.Content.ReadAsStringAsync();
