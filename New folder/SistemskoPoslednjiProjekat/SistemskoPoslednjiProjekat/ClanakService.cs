@@ -10,7 +10,7 @@ namespace SistemskoPoslednjiProjekat
 {
     public class ClanakService
     {
-        private readonly string _apiKey = "d8be50c5f1ea4d0392a1bbbd90db3eb7";
+        private readonly string _apiKey = "apikey";
 
         public async Task<IEnumerable<Clanak>> FetchClanciAsync(string query)
         {
