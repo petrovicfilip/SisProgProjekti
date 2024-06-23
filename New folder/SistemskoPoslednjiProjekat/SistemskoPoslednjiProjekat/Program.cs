@@ -16,25 +16,25 @@ namespace SistemskoPoslednjiProjekat
 
     public class SimpleHttpServer
     {
-        private readonly HttpListener _listener = new HttpListener();
+        private readonly HttpListener listener = new HttpListener();
 
         public SimpleHttpServer()
         {
-            _listener.Prefixes.Add("http://localhost:5050/clanci/");
-            _listener.Prefixes.Add("http://127.0.0.1:5050/clanci/");
+            listener.Prefixes.Add("http://localhost:5050/clanci/");
+            listener.Prefixes.Add("http://127.0.0.1:5050/clanci/");
         }
 
         public async Task StartAsync()
         {
-            _listener.Start();
+            listener.Start();
             Console.WriteLine("Server started on http://localhost:5050/clanci/");
             while (true)
             {
-                var context = await _listener.GetContextAsync();
-                _ = Task.Run(() => HandleRequestAsync(context));
+                var context = await listener.GetContextAsync();
+                await HandleRequestAsync(context);
             }
         }
-
+        //http://localhost:5050/clanci?query=neki_upit
         private async Task HandleRequestAsync(HttpListenerContext context)
         {
             var query = context.Request.QueryString["query"];

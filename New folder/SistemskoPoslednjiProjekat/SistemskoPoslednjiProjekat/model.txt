@@ -1,0 +1,6 @@
+tech AI This is a tech article about AI.
+health COVID-19 This is a health article about COVID-19.
+tech Programming This is a tech article about programming.
+health Fitness This is a health article about fitness.
+tech AI Another tech article discussing AI and machine learning.
+health COVID-19 Latest updates on COVID-19 pandemic.

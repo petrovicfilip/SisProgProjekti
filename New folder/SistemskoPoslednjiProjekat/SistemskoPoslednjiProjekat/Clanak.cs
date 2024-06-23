@@ -10,5 +10,6 @@ namespace SistemskoPoslednjiProjekat
         public string UrlToImage { get; set; }
         public DateTime publishedAt { get; set; }
         public string Content { get; set; }
+        public string Topic { get; set; }
     }
 }

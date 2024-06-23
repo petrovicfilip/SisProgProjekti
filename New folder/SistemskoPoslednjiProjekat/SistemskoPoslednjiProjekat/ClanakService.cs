@@ -10,20 +10,21 @@ namespace SistemskoPoslednjiProjekat
 {
     public class ClanakService
     {
-        private readonly string _apiKey = "d8be50c5f1ea4d0392a1bbbd90db3eb7";
+        private readonly string apiKey = "apikey";
+        private readonly HttpClient client = new HttpClient();
 
         public async Task<IEnumerable<Clanak>> FetchClanciAsync(string query)
         {
-            HttpClient _client = new HttpClient();
-            var url = $"https://newsapi.org/v2/everything?q={Uri.EscapeDataString(query)}&sortBy=popularity&apiKey={_apiKey}";
+
+            var url = $"https://newsapi.org/v2/everything?q={Uri.EscapeDataString(query)}&sortBy=popularity&apiKey={apiKey}";
             Console.WriteLine($"Fetching URL: {url}");
 
             //Mora inace se ucek vraca 400 status code
-            _client.DefaultRequestHeaders.Add("User-Agent", "SistemskoPoslednjiProjekat/1.0");
+            client.DefaultRequestHeaders.Add("User-Agent", "SistemskoPoslednjiProjekat/1.0");
 
             try
             {
-                var response = await _client.GetAsync(url);
+                var response = await client.GetAsync(url);
                 Console.WriteLine($"Response Status Code: {response.StatusCode}");
 
                 if (!response.IsSuccessStatusCode)

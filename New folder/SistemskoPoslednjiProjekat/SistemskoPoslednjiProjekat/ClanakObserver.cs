@@ -4,11 +4,11 @@ namespace SistemskoPoslednjiProjekat
 {
     public class ClanakObserver : IObserver<Clanak>
     {
-        private readonly string _name;
+        private readonly string name;
 
         public ClanakObserver(string name)
         {
-            _name = name;
+            this.name = name;
         }
 
         public void OnNext(Clanak article)
