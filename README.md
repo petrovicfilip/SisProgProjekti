@@ -1,5 +1,5 @@
 PROJEKAT SE CEO TRENUTNO NALAZI U DEVELOPMENT GRANI !
-Zadatak(zadatak broj 16):
+Zadatak(zadatak broj 16):.
 Kreirati Web server koji klijentu omogućava pretragu filmova uz pomoć TMDB API-a. Pretraga
 se može vršiti pomoću filtera koji se definišu u okviru query-a. Spisak filmova koji zadovoljavaju
 kriterijum se vraćaju kao odgovor. Svi zahtevi serveru se šalju preko browser-a korišćenjem GET
